@@ -52,9 +52,9 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
   };
 
   return (
-    <div className={`sidebar ${isCollapsed ? 'w-16' : 'w-72'} transition-all duration-300 ease-in-out`}>
+    <div className={`sidebar ${isCollapsed ? 'w-16' : 'w-72'} transition-all duration-300 ease-in-out flex flex-col`}>
       {/* Header */}
-      <div className="p-6 border-b border-slate-200">
+      <div className="p-6">
         <div className={`flex items-center ${isCollapsed ? 'justify-center' : ''}`}>
           {/* Hamburger button */}
           <button
@@ -93,42 +93,38 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
             className={`sidebar-item ${activeSection === item.id ? 'sidebar-item-active' : ''} ${isCollapsed ? 'sidebar-item-collapsed' : ''}`}
             title={isCollapsed ? item.label : undefined}
           >
-            <div className={`flex items-center ${isCollapsed ? 'justify-center' : ''}`}>
+            <div className="flex items-center">
               <span className="flex-shrink-0">
                 {item.icon}
               </span>
-              {!isCollapsed && (
-                <div className="ml-3 flex-1 text-left">
-                  <div className="font-medium">{item.label}</div>
-                  <div className="text-xs opacity-75">
-                    {item.description}
-                  </div>
+              <div className="ml-3 flex-1 text-left">
+                <div className="font-medium">{item.label}</div>
+                <div className="text-xs opacity-75">
+                  {item.description}
                 </div>
-              )}
+              </div>
             </div>
           </button>
         ))}
       </nav>
 
-      {/* Footer */}
-      <div className="p-4 border-t border-slate-200">
+      {/* Footer - Logout at bottom */}
+      <div className="mt-auto border-t border-slate-200 p-4">
         <button
           onClick={handleLogout}
           className={`sidebar-item sidebar-item-logout ${isCollapsed ? 'sidebar-item-collapsed' : ''}`}
           title={isCollapsed ? 'Logout' : undefined}
         >
-          <div className={`flex items-center ${isCollapsed ? 'justify-center' : ''}`}>
+          <div className="flex items-center">
             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
-            {!isCollapsed && (
-              <div className="ml-3 flex-1 text-left">
-                <div className="font-medium">Logout</div>
-                <div className="text-xs opacity-75">
-                  Sign out of your account
-                </div>
+            <div className="ml-3 flex-1 text-left">
+              <div className="font-medium">Logout</div>
+              <div className="text-xs opacity-75">
+                Sign out of your account
               </div>
-            )}
+            </div>
           </div>
         </button>
       </div>

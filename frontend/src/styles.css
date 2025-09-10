@@ -575,3 +575,93 @@ button, input, select, textarea, [role="button"] {
 .sidebar-item-collapsed.sidebar-item-logout:hover svg {
   color: #dc2626;
 }
+
+/* Smooth text animation for sidebar */
+.sidebar-item {
+  overflow: hidden;
+}
+
+.sidebar-item .ml-3 {
+  white-space: nowrap;
+  transition: all 0.3s ease-in-out;
+  transform-origin: left;
+}
+
+/* When collapsed, hide text smoothly */
+.sidebar-item-collapsed .ml-3 {
+  opacity: 0;
+  transform: translateX(-100%);
+  width: 0;
+  margin-left: 0;
+}
+
+/* When expanded, show text smoothly */
+.sidebar-item:not(.sidebar-item-collapsed) .ml-3 {
+  opacity: 1;
+  transform: translateX(0);
+  width: auto;
+  margin-left: 0.75rem;
+}
+
+/* Ensure smooth transitions for all text elements */
+.sidebar-item .font-medium,
+.sidebar-item .text-xs {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.sidebar-item-collapsed .font-medium,
+.sidebar-item-collapsed .text-xs {
+  opacity: 0;
+}
+
+/* Improved smooth text animation - fix stuttering */
+.sidebar-item {
+  overflow: hidden;
+  position: relative;
+}
+
+.sidebar-item .ml-3 {
+  white-space: nowrap;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left;
+  will-change: transform, opacity;
+}
+
+/* When collapsed, hide text smoothly */
+.sidebar-item-collapsed .ml-3 {
+  opacity: 0;
+  transform: translateX(-20px);
+  width: 0;
+  margin-left: 0;
+  pointer-events: none;
+}
+
+/* When expanded, show text smoothly */
+.sidebar-item:not(.sidebar-item-collapsed) .ml-3 {
+  opacity: 1;
+  transform: translateX(0);
+  width: auto;
+  margin-left: 0.75rem;
+  pointer-events: auto;
+}
+
+/* Ensure smooth transitions for all text elements */
+.sidebar-item .font-medium,
+.sidebar-item .text-xs {
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+.sidebar-item-collapsed .font-medium,
+.sidebar-item-collapsed .text-xs {
+  opacity: 0;
+}
+
+/* Optimize for better performance */
+.sidebar-item-collapsed {
+  will-change: transform;
+}
+
+.sidebar-item:not(.sidebar-item-collapsed) {
+  will-change: auto;
+}
