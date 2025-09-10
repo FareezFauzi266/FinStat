@@ -58,4 +58,3 @@ The FinStat application now includes an automatic location detection feature tha
 - No location data is sent to external services except for reverse geocoding
 - You can manually edit or clear location data at any time
 - Location permission can be revoked through browser settings
-
