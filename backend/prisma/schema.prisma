@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  fullName    String
+  password    String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  transactions Transaction[]
+  bankAccounts BankAccount[]
+}
+
+model Category {
+  id             Int            @id @default(autoincrement())
+  name           String         @unique
+  subcategories  Subcategory[]
+  transactions   Transaction[]
+}
+
+model Subcategory {
+  id           Int           @id @default(autoincrement())
+  name         String
+  category     Category      @relation(fields: [categoryId], references: [id])
+  categoryId   Int
+  transactions Transaction[]
+  @@unique([name, categoryId])
+}
+
+model BankAccount {
+  id            Int      @id @default(autoincrement())
+  name          String
+  accountNumber String
+  user          User     @relation(fields: [userId], references: [id])
+  userId        Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Transaction {
+  id             Int              @id @default(autoincrement())
+  account        String
+  date           DateTime
+  name           String
+  debit          Float
+  credit         Float
+  category       Category?        @relation(fields: [categoryId], references: [id])
+  categoryId     Int?
+  subcategory    Subcategory?     @relation(fields: [subcategoryId], references: [id])
+  subcategoryId  Int?
+  type           String
+  location       String?
+  latitude       Float?
+  longitude      Float?
+  user           User             @relation(fields: [userId], references: [id])
+  userId         Int
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}

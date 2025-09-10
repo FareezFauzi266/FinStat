@@ -1,0 +1,56 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: finstat_db
+    environment:
+      POSTGRES_USER: finstat
+      POSTGRES_PASSWORD: finstat
+      POSTGRES_DB: finstat
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U finstat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: finstat_backend
+    environment:
+      DATABASE_URL: postgresql://finstat:finstat@db:5432/finstat?schema=public
+      PORT: 4000
+      NODE_ENV: development
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: ["sh", "-c", "npx prisma migrate deploy && npm run dev"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: finstat_frontend
+    environment:
+      VITE_API_URL: http://localhost:4000
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev", "--", "--host"]
+
+volumes:
+  db_data: {} 
